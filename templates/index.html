@@ -1,0 +1,46 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Deepfake Detector</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+  <div class="container">
+    <h1>Deepfake Detection</h1>
+    <p class="subtitle">Upload an image and check if it looks manipulated.</p>
+
+    <form method="POST" enctype="multipart/form-data" class="upload-form">
+      <input type="file" name="file" accept="image/*" required>
+      <button type="submit">Detect</button>
+    </form>
+
+    {% if result %}
+      <div class="result">
+        {% if result.error %}
+          <p class="error">{{ result.error }}</p>
+        {% else %}
+          <p class="label">
+            Result:
+            {% if result.label == 'deepfake' %}
+              <span class="deepfake">DEEPFAKE</span>
+            {% else %}
+              <span class="real">REAL</span>
+            {% endif %}
+          </p>
+          <p class="score">Score: {{ result.score }}</p>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {% if image_url %}
+      <div class="preview">
+        <h2>Uploaded Image</h2>
+        <img src="{{ image_url }}" alt="Uploaded image">
+      </div>
+    {% endif %}
+  </div>
+</body>
+</html>
